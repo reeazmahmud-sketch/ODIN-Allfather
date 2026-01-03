@@ -1,0 +1,7 @@
+name: ExampleProject
+root: ~/ODIN/Workspaces/ExampleProject
+agents:
+  claude: enabled
+dependencies: {}
+permissions: {}
+last_active: 2026-01-02T22:00:00

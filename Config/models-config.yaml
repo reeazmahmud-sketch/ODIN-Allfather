@@ -1,0 +1,171 @@
+# ODIN AI Model Configuration
+# Defines available AI models and their integration methods
+
+models:
+  # Local LLM Models
+  local:
+    ollama:
+      name: "Ollama"
+      type: "local"
+      endpoint: "http://localhost:11434"
+      models:
+        - "llama3"
+        - "llama3.1"
+        - "codellama"
+        - "mistral"
+      cost: "free"
+      requires_internet: false
+
+    lm_studio:
+      name: "LM Studio"
+      type: "local"
+      endpoint: "http://localhost:1234"
+      models:
+        - "custom"
+      cost: "free"
+      requires_internet: false
+
+  # Cloud Free Tier Models
+  cloud_free:
+    gemini_flash:
+      name: "Gemini 2.5 Flash"
+      type: "cloud"
+      provider: "google"
+      endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+      api_key_required: true
+      api_key_env: "GOOGLE_API_KEY"
+      cost: "free"
+      rate_limits:
+        requests_per_minute: 15
+        requests_per_day: 1500
+      features:
+        - "multimodal"
+        - "fast_responses"
+        - "code_generation"
+        - "google_workspace"
+
+    claude_haiku:
+      name: "Claude 3.5 Haiku"
+      type: "cloud"
+      provider: "anthropic"
+      endpoint: "https://api.anthropic.com/v1/messages"
+      api_key_required: true
+      api_key_env: "ANTHROPIC_API_KEY"
+      cost: "free_tier"
+      features:
+        - "fast_responses"
+        - "code_analysis"
+
+  # Cloud Paid Tier Models
+  cloud_paid:
+    gemini_pro:
+      name: "Gemini 2.0 Pro"
+      type: "cloud"
+      provider: "google"
+      endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-pro:generateContent"
+      api_key_required: true
+      api_key_env: "GOOGLE_API_KEY"
+      cost: "paid"
+      pricing:
+        input: "$0.00025 per 1K tokens"
+        output: "$0.00075 per 1K tokens"
+      features:
+        - "advanced_reasoning"
+        - "multimodal"
+        - "long_context"
+
+    claude_sonnet:
+      name: "Claude 3.5 Sonnet"
+      type: "cloud"
+      provider: "anthropic"
+      endpoint: "https://api.anthropic.com/v1/messages"
+      api_key_required: true
+      api_key_env: "ANTHROPIC_API_KEY"
+      cost: "paid"
+      pricing:
+        input: "$3.00 per 1M tokens"
+        output: "$15.00 per 1M tokens"
+      features:
+        - "advanced_reasoning"
+        - "code_generation"
+        - "long_context"
+
+    gpt4:
+      name: "GPT-4 Turbo"
+      type: "cloud"
+      provider: "openai"
+      endpoint: "https://api.openai.com/v1/chat/completions"
+      api_key_required: true
+      api_key_env: "OPENAI_API_KEY"
+      cost: "paid"
+      pricing:
+        input: "$10.00 per 1M tokens"
+        output: "$30.00 per 1M tokens"
+      features:
+        - "advanced_reasoning"
+        - "vision"
+        - "function_calling"
+
+# Default model selection
+default_model:
+  primary: "gemini_flash"  # Default to free tier
+  fallback: "ollama"       # Fallback to local if cloud unavailable
+
+# Model selection strategy
+selection_strategy:
+  # User can choose:
+  # 1. "local_first" - Prefer local models, use cloud as fallback
+  # 2. "cloud_first" - Prefer cloud models (free tier first)
+  # 3. "cost_optimized" - Use free tier cloud, fallback to local
+  # 4. "performance" - Use paid tier for best results
+  # 5. "manual" - User selects model explicitly
+
+  strategy: "cost_optimized"
+
+# Integration modes
+integration_modes:
+  local_llm:
+    description: "Run AI models locally on your machine"
+    advantages:
+      - "No internet required"
+      - "Complete privacy"
+      - "No API costs"
+      - "Unlimited usage"
+    disadvantages:
+      - "Requires local resources (CPU/RAM/GPU)"
+      - "Slower than cloud models"
+      - "Limited to smaller models"
+
+  local_agents:
+    description: "Run specialized AI agents locally"
+    advantages:
+      - "Custom fine-tuned agents"
+      - "Domain-specific expertise"
+      - "Complete control"
+    disadvantages:
+      - "Requires setup and training"
+      - "Limited to specific tasks"
+
+  cloud_free:
+    description: "Use cloud AI with free tier limits"
+    advantages:
+      - "Fast responses"
+      - "No local resources needed"
+      - "Latest models"
+      - "No cost"
+    disadvantages:
+      - "Rate limits apply"
+      - "Requires internet"
+      - "API key needed"
+
+  cloud_paid:
+    description: "Use premium cloud AI models"
+    advantages:
+      - "Best performance"
+      - "Highest quality responses"
+      - "Advanced features"
+      - "Higher rate limits"
+    disadvantages:
+      - "Usage costs apply"
+      - "Requires payment setup"
+      - "Requires internet"

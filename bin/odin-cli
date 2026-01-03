@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# ODIN - The Allfather CLI
+# AI/Agent Orchestration System
+
+ODIN_BASE="$HOME/Terminal-CLI/Odin/Odin"
+DAEMON_SOCKET="$ODIN_BASE/daemon/odin.sock"
+DAEMON_SCRIPT="$ODIN_BASE/daemon/odin_daemon.py"
+
+function send_to_daemon() {
+    if [ ! -S "$DAEMON_SOCKET" ]; then
+        echo "❌ ODIN daemon not running"
+        echo "Start with: odin serve"
+        exit 1
+    fi
+    echo "$1" | socat - UNIX-CONNECT:"$DAEMON_SOCKET"
+}
+
+case "$1" in
+    serve|start)
+        if [ -S "$DAEMON_SOCKET" ]; then
+            echo "⚠️  ODIN daemon already running"
+            exit 0
+        fi
+        echo "🚀 Starting ODIN - The Allfather..."
+        python3 "$DAEMON_SCRIPT" &
+        sleep 2
+        echo "✓ ODIN daemon started"
+        ;;
+    create|delete|list|status|install|integrate|help)
+        send_to_daemon "$*"
+        ;;
+    stop)
+        if [ -S "$DAEMON_SOCKET" ]; then
+            pkill -f "odin_daemon.py"
+            rm -f "$DAEMON_SOCKET"
+            echo "✓ ODIN daemon stopped"
+        else
+            echo "ODIN daemon not running"
+        fi
+        ;;
+    *)
+        echo "ODIN - The Allfather AI/Agent Orchestration System"
+        echo ""
+        echo "Usage: odin {serve|create|list|integrate|status|help|stop}"
+        echo ""
+        echo "Commands:"
+        echo "  serve          - Start ODIN daemon"
+        echo "  create <name>  - Create a new project"
+        echo "  list           - List all projects"
+        echo "  integrate <agent> <project> - Integrate an agent"
+        echo "  status         - Show system status"
+        echo "  help           - Show detailed help"
+        echo "  stop           - Stop ODIN daemon"
+        ;;
+esac

@@ -110,17 +110,18 @@ These components should be evolved rather than discarded.
 
 ---
 
-## 5. Weaver Engine Boundary
+## 5. ODIN Scope Boundary
 
-ODIN may integrate with the Weaver Engine, but ODIN remains a separate product and security boundary.
+ODIN — The Allfather is an independent system and repository.
 
-The integration contract should map:
+The following systems are explicitly outside the ODIN v2.0.0 architecture unless a separate future decision introduces an implemented integration:
 
-- **Actions** → ODIN capability registry and approved agent/tool operations;
-- **State** → durable ODIN checkpoints, journals, project metadata, recovery state;
-- **Network** → validated IPC/RPC/event transport between trusted components.
+- Weaver Engine
+- TERMINATOR / ODIN-TERMINATOR
+- RAAL Civilization
+- other external orchestration runtimes
 
-Weaver integration must be adapter-based. ODIN must remain operable when the Weaver Engine is absent or disabled unless a future release explicitly changes that product requirement.
+ODIN v2.0.0 must not assume, document, or require a Weaver Engine dependency. The Weaver Engine has never been implemented in this ODIN-Allfather repository and is therefore not part of this production architecture.
 
 ---
 
@@ -183,9 +184,8 @@ The v2 documentation program will maintain:
 6. `docs/v2.0.0/GUARDIAN.md` — macOS/system monitoring and safe control.
 7. `docs/v2.0.0/OPERATIONS.md` — install, configure, run, diagnose, backup, restore.
 8. `docs/v2.0.0/TESTING_AND_RELEASE.md` — test matrix, CI, acceptance gates, releases.
-9. `docs/v2.0.0/WEAVER_INTEGRATION.md` — optional Weaver Engine contract.
-10. `docs/v2.0.0/MIGRATION_FROM_V1.md` — migration and compatibility policy.
-11. `CHANGELOG.md` — release changes using semantic versioning.
+9. `docs/v2.0.0/MIGRATION_FROM_V1.md` — migration and compatibility policy.
+10. `CHANGELOG.md` — release changes using semantic versioning.
 
 ---
 
@@ -254,5 +254,5 @@ v1 remains historical. v2 documentation is developed on a dedicated branch and s
 
 ---
 
-**Status:** Audit complete; production hardening documentation in progress.  
+**Status:** Audit corrected; production hardening documentation in progress.  
 **Branch:** `docs/v2.0.0-production`
